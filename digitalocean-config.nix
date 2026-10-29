@@ -1,5 +1,5 @@
 { ... }: {
-  nix.settings.experimental-features = "nix-command flakes";
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   swapDevices = [ {
     device = "/var/lib/swapfile";
     # Swap to evaluate nixpkgs even on the smallest droplets (10 GiB disk with
