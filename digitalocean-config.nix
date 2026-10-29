@@ -76,11 +76,11 @@ let
       };
     };
 in
-{
+{ lib, ... }: {
   imports = [
     defaults
     userDataFileModule
   ];
-  dodo.defaultSettings = true;
-  dodo.extractConstants = true;
+  dodo.defaultSettings = lib.mkDefault true;
+  dodo.extractConstants = lib.mkDefault true;
 }
