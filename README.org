@@ -1,4 +1,56 @@
-#+title: NixOS images built using Github Actions
+#+title: DigitalOcean droplets managed from Nix
+
+Opinionated, batteries included, zero backwards compatibility.
+
+For my personal use but shared here for others.  Please do not send feature requests.  Please fork this before use.
+
+* Usage
+Make sure you have 1password installed with CLI integration turned on and a key at =Personal/DigitalOcean/api key=.
+
+Inside a devshell:
+#+begin_src shell
+nix develop github:hraban/nix-digitalocean
+#+end_src
+
+Initialize your envvars:
+
+#+begin_src shell
+eval "$(do-load-vars)"
+#+end_src
+
+Seed your DO account with the latest x86_64 compatible image:
+
+#+begin_src sh
+do-upload-image
+#+end_src
+
+Wait a few minutes for the image to become available in your region.  You don’t need to do this for every droplet; only when you want to update the image.
+
+Create a sample configuration, save as =configuration.nix=:
+
+#+begin_src nix
+{ pkgs, ... }:
+{
+  # If you’re unsure about this line: keep it.
+  imports = [
+    (builtins.fetchurl "https://raw.githubusercontent.com/hraban/nixos-images/master/digitalocean-config.nix")
+  ];
+
+  environment.systemPackages = [ pkgs.hello ];
+}
+#+end_src
+
+Create a droplet with that config:
+
+#+begin_src sh :results verbatim
+do-launch configuration.nix
+#+end_src
+
+#+RESULTS:
+: ID           Name         Public IPv4        Private IPv4    Public IPv6    Memory    VCPUs    Disk    Region    Image                                                    VPC UUID                                Status    Tags          Features              Volumes
+: 613744189    dodo-8077    123.231.213.132    10.135.0.5                     2048      1        50      fra1      Unknown OS nixos-nixpkgs-unstable-nyc1-20261029T0236Z    fa3ccc40-dc84-11e8-8b13-3cfdfea9f160    active    dodo,nixos    private_networking
+
+* Image
 
 Every Sunday the latest DigitalOcean image is built and uploaded as a release. You can download it here:
 
