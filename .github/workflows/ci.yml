@@ -1,5 +1,7 @@
 name: "Build"
 on:
+  push:
+    branches: ["master"]
   workflow_dispatch: {}
   # Build a new image every week
   schedule:
