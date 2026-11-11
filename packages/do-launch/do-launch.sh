@@ -12,7 +12,8 @@ if ! img="$(doctl compute image list | grep "$DO_IMAGE_SLUG" | head -1 | cut -d 
   >&2 echo "Couldn't find Digitalocean image with name $DO_IMAGE_SLUG"
   exit 1
 fi
-name="dodo-$RANDOM"
+
+name="dodo-$(date '+%m%d')-$RANDOM"
 
 # Awkward CLI: first arg, if present, is the userdata file; any other args are
 # args to doctl.
